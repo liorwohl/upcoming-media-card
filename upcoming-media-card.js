@@ -427,6 +427,7 @@ class UpcomingMediaCard extends HTMLElement {
       this.config.line4_color ||
       this.config.line_color ||
       defaultClr("var(--primary-text-color)", "#fff");
+    const url = this.config.url;
     const accent =
       this.config.accent_color || defaultClr("var(--primary-color)", "#000");
     const border = this.config.border_color || defaultClr("#fff", "#000");
@@ -831,6 +832,11 @@ class UpcomingMediaCard extends HTMLElement {
       }
       let deepLink = item("deep_link");
 
+      // Replace keywords in url (if there is a custom URL)
+      if (url) {
+        deepLink = url.replace(keywords, val => keys[val]);
+      }
+
       // Mouse & touch event listeners
       function addDeepLinkListener(element, link) {
         let startX = 0, startY = 0, moveThresholdPx = 10, longPressThresholdMs = 500;
@@ -904,11 +910,9 @@ class UpcomingMediaCard extends HTMLElement {
         clickableAreaDiv.style.zIndex = '5';
         containerDiv.style.overflow = 'hidden';
         containerDiv.appendChild(clickableAreaDiv);
-        if (!this.config.disable_hyperlinks && (this.url || deepLink || (this.config.enable_trailers && item("trailer")))) {
+        if (!this.config.disable_hyperlinks && (deepLink || (this.config.enable_trailers && item("trailer")))) {
           if (this.config.enable_trailers && item("trailer")) {
-            this.addDeepLinkListener(clickableAreaDiv, deepLink || this.url, item("trailer"));
-          } else if (this.url) {
-            this.addDeepLinkListener(clickableAreaDiv, this.url);
+            this.addDeepLinkListener(clickableAreaDiv, deepLink, item("trailer"));
           } else if (deepLink) {
             this.addDeepLinkListener(clickableAreaDiv, deepLink);
           }
@@ -961,7 +965,6 @@ class UpcomingMediaCard extends HTMLElement {
             </div>
         `;
         fanartContainerDiv.innerHTML = fanartContainerInnerHTML;
-        let fanartDeepLink = item("deep_link");
         let clickableAreaDivFanart = document.createElement('div');
         // Prevent clicking fanart border
         clickableAreaDivFanart.style.position = 'absolute';
@@ -973,13 +976,11 @@ class UpcomingMediaCard extends HTMLElement {
         clickableAreaDivFanart.style.zIndex = '5';
         fanartContainerDiv.style.overflow = 'hidden';
         fanartContainerDiv.appendChild(clickableAreaDivFanart);
-        if (!this.config.disable_hyperlinks && (this.url || fanartDeepLink || (this.config.enable_trailers && item("trailer")))) {
+        if (!this.config.disable_hyperlinks && (deepLink || (this.config.enable_trailers && item("trailer")))) {
           if (this.config.enable_trailers && item("trailer")) {
-            this.addDeepLinkListener(clickableAreaDivFanart, fanartDeepLink || this.url, item("trailer"));
-          } else if (this.url) {
-            this.addDeepLinkListener(clickableAreaDivFanart, this.url);
-          } else if (fanartDeepLink) {
-            this.addDeepLinkListener(clickableAreaDivFanart, fanartDeepLink);
+            this.addDeepLinkListener(clickableAreaDivFanart, deepLink, item("trailer"));
+          } else if (deepLink) {
+            this.addDeepLinkListener(clickableAreaDivFanart, deepLink);
           }
           clickableAreaDivFanart.style.cursor = 'pointer';
         } else {
