@@ -176,7 +176,7 @@ This card has many customization options, but none are required to use the card.
 |box_shadows|boolean|true|Display or hide shadows behind objects.|
 |all_shadows|boolean|no default|Turns both text and object shadows on or off.|
 |enable_transparency|boolean|false|Turns on gradient transparency effect.|
-|url|string|no default|Makes entire card clickable with specified hyperlink.|
+|url|string|no default|Makes entire card clickable with specified hyperlink. You can use [keywords](#text-content) to build a custom link for each episode. Example: **`url: http://google.com?q=$title $number`** |
 |collapse|string|no default|Prioritize/group by attribute value (collapsing the rest of the items). Example: **`collapse: flag=true`** |
 |collapse|number|no default|Collapses all items after the specified number of items. Example: **`collapse: 2`**|
 |filter|string|no default|Filter items by attribute value (including partial matches). Example: **`filter: flag=true`**.  The rest of the items will be discarded.|
